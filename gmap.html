@@ -39,12 +39,14 @@
     <script type="text/javascript">
 
     Map = null;
-    CenterLat =- 32.1398;
-    CenterLon = 116.0872;
+    receiverLat =- 32.1398;
+    receiverLon = 116.0872;
+    receiverPosition = new google.maps.LatLng(receiverLat, receiverLon);
+
     Planes = {};
     NumPlanes = 0;
     Selected = null
-
+    
     function getIconForPlane(plane) {
         var r = 255, g = 255, b = 0;
         var maxalt = 40000; /* Max altitude in the average case */
@@ -90,9 +92,17 @@
         if (p.flight.length) {
             html += '<b>'+p.flight+'</b><br>';
         }
+
+
+        var pos = new google.maps.LatLng(p.lat, p.lon);
+        var distance_from_receiver = google.maps.geometry.spherical.computeDistanceBetween(receiverPosition, pos);
         html += 'Altitude: '+p.altitude+' feet<br>';
+        html += 'Altitude: '+(p.altitude * 0.3048).toFixed(2)+' meter<br>';
         html += 'Speed: '+p.speed+' knots<br>';
+        html += 'Speed: '+(p.speed * 1.852).toFixed(2) +' km/h<br>';
+        html += 'Track: '+p.track+' <br>';
         html += 'Coordinates: '+p.lat+', '+p.lon+'<br>';
+        html += 'Distance from receiver: '+(distance_from_receiver/1000).toFixed(2)+' km <br>';
         i.innerHTML = html;
     }
 
@@ -151,7 +161,6 @@
     }
 
     function initialize() {
-        var receiverPosition = new google.maps.LatLng(CenterLat, CenterLon);
         var mapOptions = {
             center: receiverPosition,
             zoom: 10,
