@@ -32,18 +32,16 @@
         color:#333;
       }
     </style>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">
-    </script>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?sensor=true">
-    </script>
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+
     <script type="text/javascript">
-    Map=null;
-    CenterLat=45.0;
-    CenterLon=9.0;
-    Planes={};
+    Map = null;
+    CenterLat =- 32.1398;
+    CenterLon = 116.0872;
+    Planes = {};
     NumPlanes = 0;
-    Selected=null
+    Selected = null
 
     function getIconForPlane(plane) {
         var r = 255, g = 255, b = 0;
@@ -151,12 +149,28 @@
     }
 
     function initialize() {
+        var receiverPosition = new google.maps.LatLng(CenterLat, CenterLon);
         var mapOptions = {
-            center: new google.maps.LatLng(CenterLat, CenterLon),
-            zoom: 5,
+            center: receiverPosition,
+            zoom: 10,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        Map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+        var Map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+        var radii = [1000, 5000, 10000, 20000, 50000, 100000, 200000, 300000];
+        for (var i = 0; i < radii.length; i++) {
+          new google.maps.Circle({
+            center: receiverPosition,
+            radius: radii[i],
+            strokeColor: "#0000FF",
+            strokeOpacity: 0.5,
+            strokeWeight: 0.5,
+            fillOpacity: 0,
+            map: Map,
+          });
+        };
+
 
         /* Setup our timer to poll from the server. */
         window.setInterval(function() {
@@ -171,7 +185,7 @@
     <div id="map_canvas" style="width:80%; height:100%"></div>
     <div id="info">
       <div>
-        <h1>Dump1090</h1>
+        <h1>Araluen Airspace</h1>
         <p id="geninfo"></p>
         <p id="selinfo">Click on a plane for info.</p>
       </div>
