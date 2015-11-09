@@ -33,9 +33,11 @@
       }
     </style>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 
     <script type="text/javascript">
+
     Map = null;
     CenterLat =- 32.1398;
     CenterLon = 116.0872;
@@ -156,7 +158,7 @@
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
-        var Map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+        Map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
         var radii = [1000, 5000, 10000, 20000, 50000, 100000, 200000, 300000];
         for (var i = 0; i < radii.length; i++) {
@@ -180,6 +182,8 @@
     }
 
     </script>
+
+
   </head>
   <body onload="initialize()">
     <div id="map_canvas" style="width:80%; height:100%"></div>
